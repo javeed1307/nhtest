@@ -1,0 +1,26 @@
+name: CD Test
+
+
+
+on:
+  workflow_dispatch:
+
+
+
+jobs:
+  build:
+
+
+
+   runs-on: ubuntu-latest
+
+
+
+   steps:
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Connecto to AKS
+      run: az aks get-credentials --resource-group athmacloudpoc-rg --name athmacloudpoc-cluster
+    - name: Rollout phr gateway log
+      run: kubectl rollout restart deployment/phr-gateway-log -n default
